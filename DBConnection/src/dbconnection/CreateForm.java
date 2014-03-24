@@ -41,6 +41,7 @@ public class CreateForm extends JFrame implements MouseListener {
     public CreateForm(Connection con, MyConnection m) throws SQLException {
         this.con = con;
         this.m = m;
+        
     }
 
     public void createF() throws SQLException {

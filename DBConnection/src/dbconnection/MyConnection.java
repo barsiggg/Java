@@ -15,12 +15,18 @@ public class MyConnection {
     public ArrayList<ArrayList> result;
     public ArrayList CollumName;
     public ArrayList<String> TableName;
+    public String text;
 
     public MyConnection(Connection connect) {
         con = connect;
 
     }
-
+        
+    public String getText(){
+        text="123";
+        return text;
+    }
+    
     public static Connection getConection(String jdbcUrl, String login, String password) throws SQLException {
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
