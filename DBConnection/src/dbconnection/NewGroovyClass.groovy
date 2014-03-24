@@ -14,7 +14,7 @@ class NewGroovyClass {
    public getMetod(){
        MyConnection test= new MyConnection()
        println test.getText()
-       
+       println greeting
    }
    
         
