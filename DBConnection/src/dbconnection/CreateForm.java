@@ -55,10 +55,10 @@ public class CreateForm extends JFrame implements MouseListener {
         JPanel panel = new JPanel(new BorderLayout());
         JComboBox combobox = new JComboBox();
        
-        while (i < m.getTableList().size()) {
-            combobox.addItem(m.getTableList().get(i));
-            i++;
-        }
+       // while (i < m.getTableList().size()) {
+         //   combobox.addItem(m.getTableList().get(i));
+           // i++;
+        //}
         
         panel.setSize(500, 400);
         panel.add(new JScrollPane(table), BorderLayout.PAGE_START);
@@ -191,34 +191,45 @@ public class CreateForm extends JFrame implements MouseListener {
 
     public class UpdateActionListener implements ActionListener {
 
-        private Object someTable;
+      
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            if ("insert".equals(e.getActionCommand())) {
-                query = "INSERT INTO TEST (name, Secondname) VALUES ('" + Field.getText() + "', '" + Field2.getText() + "')";
-            }
-            if ("delete".equals(e.getActionCommand())) {
-                query = "Delete from TEST where Id='" + model1.getValueAt(table.getSelectedRow(), 2) + "'";
-            }
+            query=null;
             if ("clean".equals(e.getActionCommand())) {
                 query = "Delete from TEST ";
             }
+            
+             if ("insert".equals(e.getActionCommand())) {
+                query = "INSERT INTO TEST (id,name, Secondname) VALUES ((select GEN_ID (app,1) from  RDB$DATABASE)"+ ", '"+ Field.getText() + "', '" + Field2.getText() + "')";
+            }
+            
+            if (table.getSelectedRow()>=0){
+
+           
+            if ("delete".equals(e.getActionCommand())) {
+                query = "Delete from TEST where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
+            }
+            
             if ("update".equals(e.getActionCommand())) {
-                query = "Update TEST set name='" + Field.getText() + "', secondname='" + Field2.getText() + "' where Id='" + model1.getValueAt(table.getSelectedRow(), 2) + "'";
+                query = "Update TEST set name='" + Field.getText() + "', secondname='" + Field2.getText() + "' where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
+            }
             }
             try {
+                if (query!=null){
                 new Select().sqlcod(con, query);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(CreateForm.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     updateTable();
+                    Field2.setText(null);
+                    Field.setText(null);
                 } catch (SQLException ex) {
                     Logger.getLogger(CreateForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
+        }
     }
-}

@@ -59,12 +59,22 @@ public class MyConnection {
                 }
                 result.add(element);
             }
+            
             MyConnection m = new MyConnection(con);
             m.getTableList();
+            
+           if (result.size()==0){
+                element = new ArrayList();
+               for (int i = 1; i <= columnCount; i++) {
+                    element.add(null);
+           }
+                result.add(element);
+           }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+      
         return result;
     }
 
