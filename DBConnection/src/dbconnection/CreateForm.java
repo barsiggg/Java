@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
  * @author Администратор
  */
 public class CreateForm extends JFrame implements MouseListener {
+
     String TableName;
     int i;
     MyConnection m;
@@ -41,7 +42,7 @@ public class CreateForm extends JFrame implements MouseListener {
     public CreateForm(Connection con, MyConnection m) throws SQLException {
         this.con = con;
         this.m = m;
-        
+
     }
 
     public void createF() throws SQLException {
@@ -54,12 +55,12 @@ public class CreateForm extends JFrame implements MouseListener {
         model1.addTableModelListener(table);
         JPanel panel = new JPanel(new BorderLayout());
         JComboBox combobox = new JComboBox();
-       
-       // while (i < m.getTableList().size()) {
-         //   combobox.addItem(m.getTableList().get(i));
-           // i++;
-        //}
-        
+
+         while (i < m.getTableList().size()) {
+           combobox.addItem(m.getTableList().get(i));
+         i++;
+        }
+
         panel.setSize(500, 400);
         panel.add(new JScrollPane(table), BorderLayout.PAGE_START);
         JFrame frame = new JFrame("Database Table Model");
@@ -75,9 +76,9 @@ public class CreateForm extends JFrame implements MouseListener {
         Field2 = new JTextField("");
         Label = new JLabel();
         Label2 = new JLabel();
-          if (table.getColumnCount()>0) {
-             Label.setText(table.getColumnName(0));
-             Label2.setText(table.getColumnName(1)); 
+        if (table.getColumnCount() > 0) {
+            Label.setText(table.getColumnName(0));
+            Label2.setText(table.getColumnName(1));
         }
         panel.add(new JScrollPane(but));
         ActionListener UpdateActionListener = new UpdateActionListener();
@@ -163,7 +164,6 @@ public class CreateForm extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        
     }
 
     @Override
@@ -191,33 +191,31 @@ public class CreateForm extends JFrame implements MouseListener {
 
     public class UpdateActionListener implements ActionListener {
 
-      
-
         @Override
         public void actionPerformed(ActionEvent e) {
-            query=null;
+            query = null;
             if ("clean".equals(e.getActionCommand())) {
                 query = "Delete from TEST ";
             }
-            
-             if ("insert".equals(e.getActionCommand())) {
-                query = "INSERT INTO TEST (id,name, Secondname) VALUES ((select GEN_ID (app,1) from  RDB$DATABASE)"+ ", '"+ Field.getText() + "', '" + Field2.getText() + "')";
-            }
-            
-            if (table.getSelectedRow()>=0){
 
-           
-            if ("delete".equals(e.getActionCommand())) {
-                query = "Delete from TEST where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
+            if ("insert".equals(e.getActionCommand())) {
+                query = "INSERT INTO TEST (id,name, Secondname) VALUES ((select GEN_ID (app,1) from  RDB$DATABASE)" + ", '" + Field.getText() + "', '" + Field2.getText() + "')";
             }
-            
-            if ("update".equals(e.getActionCommand())) {
-                query = "Update TEST set name='" + Field.getText() + "', secondname='" + Field2.getText() + "' where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
-            }
+
+            if (table.getSelectedRow() >= 0) {
+
+
+                if ("delete".equals(e.getActionCommand())) {
+                    query = "Delete from TEST where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
+                }
+
+                if ("update".equals(e.getActionCommand())) {
+                    query = "Update TEST set name='" + Field.getText() + "', secondname='" + Field2.getText() + "' where Id='" + model1.getValueAt(table.getSelectedRow(), 0) + "'";
+                }
             }
             try {
-                if (query!=null){
-                new Select().sqlcod(con, query);
+                if (query != null) {
+                    new Select().sqlcod(con, query);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(CreateForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,5 +229,5 @@ public class CreateForm extends JFrame implements MouseListener {
                 }
             }
         }
-        }
     }
+}
